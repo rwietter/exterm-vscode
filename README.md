@@ -1,1 +1,1 @@
-# exterm-vscode
+# Exterm
