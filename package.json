@@ -17,11 +17,7 @@
     "commands": [
       {
         "command": "exterm.openProjectInExternalTerminal",
-        "title": "exterm: Open Project in External Terminal"
-      },
-      {
-        "command": "exterm.helloWorld",
-        "title": "Hello World"
+        "title": "Exterm: Open in External Terminal"
       }
     ],
     "configuration": {
@@ -38,6 +34,7 @@
             "konsole",
             "xfce4-terminal",
             "kermit",
+            "urxvt",
             "cmd.exe"
           ],
           "default": "wezterm",
@@ -50,7 +47,7 @@
         {
           "when": "explorerResourceIsFolder",
           "command": "exterm.openProjectInExternalTerminal",
-          "group": "exterm@1"
+          "group": "navigation"
         }
       ]
     }

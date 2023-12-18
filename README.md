@@ -4,6 +4,8 @@ Exterm arose from the need to open the terminal and navigate through directories
 
 Exterm adds an item to the explorer/context menu of VS Code. When right-clicking on a directory, it opens the terminal directly in that directory.
 
+> **Note**: At the moment, Exterm is under development (it has not yet been published on the marketplace).
+
 ## Installation
 
 To install Exterm, you need to have [VS Code](https://code.visualstudio.com/) installed and follow the steps below:
@@ -27,6 +29,7 @@ By default, Exterm uses the terminal [wezterm](https://wezfurlong.org/wezterm/),
 - [alacritty](https://github.com/alacritty/alacritty)
 - [kitty](https://github.com/kovidgoyal/kitty)
 - [kermit](https://github.com/orhun/kermit)
+- [rxvt-unicode](http://software.schmorp.de/pkg/rxvt-unicode.html)
 
 **Windows**
 
@@ -52,7 +55,7 @@ To make Exterm open your preferred terminal, you need to configure it in the VS 
 
 To use Exterm, open the explorer/context menu of VS Code, right-click on a directory, and click on "Open in terminal," as shown in the image below:
 
-![Exterm](https://raw.githubusercontent.com/eduardo3g/exterm/main/images/exterm.png)
+![Exterm]()
 
 ## Contributing
 
