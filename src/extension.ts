@@ -1,7 +1,7 @@
+import * as child_process from 'node:child_process';
 import * as vscode from 'vscode';
-import * as cp from 'child_process';
 
-const supportedTerminals = {
+const terminalWorkingDirectory = {
   'kitty': '-d',
   'gnome-terminal': '--working-directory',
   'xfce4-terminal': '--working-directory',
@@ -9,30 +9,57 @@ const supportedTerminals = {
   'kermit': '-w',
   'wezterm': 'start --cwd',
   'urxvt': '-cd',
-  'cmd.exe': '/c', // TODO: test this flag
+  'xterm': '-e',
+  'konsole': '--workdir',
+  'cmd.exe': '/c', // TODO: I do not use Windows, so I am not sure if this is correct
+} as const;
+
+type DefaultPlatformTerminal = Partial<Record<typeof process.platform, TerminalKind>>;
+
+const defaultPlatformTerminal: DefaultPlatformTerminal = {
+  win32: 'cmd.exe',
+  linux: 'kitty',
+  darwin: 'alacritty',
 }
 
-type TerminalKind = keyof typeof supportedTerminals;
+type TerminalKind = keyof typeof terminalWorkingDirectory;
 
 export function activate(context: vscode.ExtensionContext) {
-  let openProjectInExternalTerminal = vscode.commands.registerCommand('exterm.openProjectInExternalTerminal', (uri: vscode.Uri | undefined) => {
+  const openProjectInExternalTerminal = vscode.commands.registerCommand('exterm.openProjectInExternalTerminal', (uri: vscode.Uri | undefined) => {
 
-    if (!uri) return vscode.window.showInformationMessage('No directory or file selected.');
+    if (!uri) return vscode.window.showInformationMessage('No item selected. Please select a directory to open in an external terminal.');
 
-    const defaultPlatformTerminalCommand = process.platform === 'win32' ? 'cmd.exe' : 'kitty';
+    const fsPathNormalized = uri.fsPath?.replace(/ /g, '\\ ');
+
+    const defaultTerminal = defaultPlatformTerminal[process.platform] || 'kitty';
     const terminalConfig = vscode.workspace.getConfiguration('exterm');
     const userTerm: TerminalKind | undefined = terminalConfig.get('terminalKind');
 
-    let terminalKind: TerminalKind = userTerm || defaultPlatformTerminalCommand
-    let flagDirectory = supportedTerminals[terminalKind];
-    let directoryPath = uri.fsPath;
+    const terminal: TerminalKind = userTerm || defaultTerminal
+    const flagDirectory = terminalWorkingDirectory[terminal];
+    const directoryPath = fsPathNormalized;
 
-    vscode.window.showInformationMessage(`Opening ${directoryPath} in ${terminalKind}...`);
+    const termArgs = [flagDirectory, directoryPath];
 
-    cp.spawn(terminalKind, [flagDirectory, directoryPath], {
+    const child = child_process.spawn(terminal, termArgs, {
       detached: false,
       shell: true,
-      windowsHide: false
+      windowsHide: true
+    });
+
+    child.stderr.on('data', (err) => {
+      vscode.window.showErrorMessage(`Exterm Error: ${err.toString()}`);
+    });
+
+    child.on('close', (code) => {
+      if (code !== 0) {
+        vscode.window.showErrorMessage(`Exterm Exited: terminal process exited with code ${code}`);
+        return;
+      }
+    });
+
+    child.on('error', (err) => {
+      vscode.window.showErrorMessage(`Exterm Error: failed to start terminal: ${err.message}`);
     });
   });
 
