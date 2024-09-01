@@ -1,97 +1,86 @@
 {
-  "name": "exterm",
-  "displayName": "Exterm",
-  "publisher": "rwietter",
-  "description": "Exterm is a VS Code extension that allows you to open projects and directories directly in your terminal emulator of choice.",
-  "maintainers": [
-    "Maurício Witter <rwietter@gmail.com>"
-  ],
-  "version": "0.0.1",
-  "engines": {
-    "vscode": "^1.85.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/rwietter/exterm-vscode"
-  },
-  "activationEvents": [
-    "onStartupFinished"
-  ],
-  "icon": "exterm.png",
-  "keywords": [
-    "terminal",
-    "external",
-    "open",
-    "project"
-  ],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/rwietter/exterm-vscode/issues"
-  },
-  "main": "./out/extension.js",
-  "contributes": {
-    "commands": [
-      {
-        "command": "exterm.openProjectInExternalTerminal",
-        "title": "Exterm: Open in External Terminal"
-      }
-    ],
-    "configuration": {
-      "title": "exterm",
-      "properties": {
-        "exterm.terminalKind": {
-          "type": "string",
-          "enum": [
-            "alacritty",
-            "kitty",
-            "wezterm",
-            "xterm",
-            "gnome-terminal",
-            "konsole",
-            "xfce4-terminal",
-            "kermit",
-            "urxvt",
-            "cmd.exe"
-          ],
-          "default": "wezterm",
-          "description": "Set your preferred terminal emulator."
-        }
-      }
-    },
-    "menus": {
-      "explorer/context": [
-        {
-          "when": "explorerResourceIsFolder",
-          "command": "exterm.openProjectInExternalTerminal",
-          "group": "navigation"
-        }
-      ]
-    }
-  },
-  "scripts": {
-    "prod::vscode:prepublish": "yarn run prod::esbuild-base -- --minify",
-    "prod::esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/main.js --external:vscode --format=cjs --platform=node",
-    "dev::esbuild": "npm run esbuild-base -- --sourcemap",
-    "dev::esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "pretest": "yarn run compile && yarn run lint",
-    "lint": "eslint src --ext ts",
-    "test": "vscode-test"
-  },
-  "devDependencies": {
-    "@types/mocha": "^10.0.6",
-    "@types/node": "18.x",
-    "@types/vscode": "^1.85.0",
-    "@typescript-eslint/eslint-plugin": "^6.13.1",
-    "@typescript-eslint/parser": "^6.13.1",
-    "@vscode/test-cli": "^0.0.4",
-    "@vscode/test-electron": "^2.3.8",
-    "esbuild": "^0.19.9",
-    "eslint": "^8.54.0",
-    "typescript": "^5.3.2"
-  }
+	"name": "exterm",
+	"displayName": "Exterm",
+	"publisher": "rwietter",
+	"description": "Exterm is a VS Code extension that allows you to open projects and directories directly in your terminal emulator of choice.",
+	"maintainers": ["Maurício Witter <rwietter@gmail.com>"],
+	"version": "0.1.2",
+	"engines": {
+		"vscode": "^1.85.0"
+	},
+	"categories": ["Other"],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/rwietter/exterm-vscode"
+	},
+	"activationEvents": ["onStartupFinished"],
+	"icon": "exterm.png",
+	"keywords": ["terminal", "external", "open", "project"],
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/rwietter/exterm-vscode/issues"
+	},
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "exterm.openProjectInExternalTerminal",
+				"title": "Exterm: Open in External Terminal"
+			}
+		],
+		"configuration": {
+			"title": "exterm",
+			"properties": {
+				"exterm.terminalKind": {
+					"type": "string",
+					"enum": [
+						"alacritty",
+						"kitty",
+						"wezterm",
+						"xterm",
+						"gnome-terminal",
+						"konsole",
+						"xfce4-terminal",
+						"kermit",
+						"urxvt",
+						"cmd.exe"
+					],
+					"default": "wezterm",
+					"description": "Set your preferred terminal emulator."
+				}
+			}
+		},
+		"menus": {
+			"explorer/context": [
+				{
+					"when": "explorerResourceIsFolder",
+					"command": "exterm.openProjectInExternalTerminal",
+					"group": "navigation"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"prod::vscode:prepublish": "yarn run prod::esbuild-base -- --minify",
+		"prod::esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/main.js --external:vscode --format=cjs --platform=node",
+		"dev::esbuild": "npm run esbuild-base -- --sourcemap",
+		"dev::esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "yarn run compile && yarn run lint",
+		"lint": "eslint src --ext ts",
+		"test": "vscode-test"
+	},
+	"devDependencies": {
+		"@types/mocha": "^10.0.6",
+		"@types/node": "18.x",
+		"@types/vscode": "^1.85.0",
+		"@typescript-eslint/eslint-plugin": "^6.13.1",
+		"@typescript-eslint/parser": "^6.13.1",
+		"@vscode/test-cli": "^0.0.4",
+		"@vscode/test-electron": "^2.3.8",
+		"esbuild": "^0.19.9",
+		"eslint": "^8.54.0",
+		"typescript": "^5.3.2"
+	}
 }
